@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Matching Game part 4</title>
+        <style>
+            img {position: absolute}
+            div {position: absolute; width: 500px; height: 500px}
+            #rightSide {left: 500px; border-left: 1px solid black}
+        </style>
+
+
+    </head>
+    <body>
+        <h1>Matching Game</h1>
+        <p>Click on the extra smiling face on the left.</p>
+
+        <div id="leftSide"></div>
+        <div id="rightSide"></div>
+
+        <script>
+            var numberOfFaces = 5;
+            var theLeftSide = document.getElementById("leftSide");
+            var theRightSide = document.getElementById("rightSide");
+            var theBody = document.getElementsByTagName("body")[0];
+
+            function generateFaces() {
+                for (var i = 0; i < numberOfFaces; i++) {
+                    var img = document.createElement("img");
+                    img.src = "http://home.cse.ust.hk/~rossiter/mooc/matching_game/smile.png";
+                    var top_position = Math.random() * 400;
+                    var left_position = Math.random() * 400;
+                    img.style.top = top_position.toString() + "px";
+                    img.style.left = left_position.toString() + "px";
+                    theLeftSide.appendChild(img);
+                }
+                var leftSideImages = theLeftSide.cloneNode(true);
+                leftSideImages.removeChild(leftSideImages.lastChild);
+                theRightSide.appendChild(leftSideImages);
+
+                theLeftSide.lastChild.onclick = function nextLevel(event) {
+                    event.stopPropagation();
+                    numberOfFaces += 5;
+                    var id1 = "leftSide";
+                    var id2 = "rightSide";
+                    deleteAllChild(id1);
+                    deleteAllChild(id2);
+                    generateFaces();
+                };
+
+                theBody.onclick = function gameOver() {
+                    alert("Game Over!");
+                    theBody.onclick = null;
+                    theLeftSide.lastChild.onclick = null;
+                };
+            }
+
+            function deleteAllChild(id) {
+                var theNode = document.getElementById(id);
+                while (theNode.firstChild) {
+                    theNode.removeChild(theNode.firstChild);
+                }
+            }
+        </script>
+
+        <script>generateFaces()</script>
+    </body>
+</html>
